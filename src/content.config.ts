@@ -16,7 +16,6 @@ const events = defineCollection({
         z.object({
           label: z.string(),
           amount: z.number(),
-          stripePriceId: z.string().optional(),
           paymentUrl: z.string().url().optional(),
           capacity: z.number().optional(),
         })

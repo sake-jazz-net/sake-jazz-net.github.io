@@ -3,13 +3,11 @@ interface Ticket {
   label: string;
   amount: number;
   paymentUrl?: string;
-  stripePriceId?: string;
   capacity?: number;
 }
 
 interface Props {
   tickets: Ticket[];
-  eventTitle: string;
 }
 
 const { tickets } = Astro.props;

@@ -4,7 +4,6 @@ import TicketSelector from "./TicketSelector.astro";
 interface TicketEntry {
   label: string;
   amount: number;
-  stripePriceId?: string;
   paymentUrl?: string;
   capacity?: number;
 }
@@ -181,7 +180,7 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
     <div class="event-actions">
       {
         tickets && tickets.some((t) => t.paymentUrl) && !isPast ? (
-          <TicketSelector tickets={tickets} eventTitle={title} />
+          <TicketSelector tickets={tickets} />
         ) : ticketUrl && !isPast ? (
           <a
             href={ticketUrl}

@@ -4,11 +4,11 @@ dist/
 .env
 .env.*
 !.env.example
-debug/
 
 # Working files
-images/
 debug/
+images/
 event_sample
 plan
 url
+Screenshot*.png

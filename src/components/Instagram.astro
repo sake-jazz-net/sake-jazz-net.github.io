@@ -11,9 +11,6 @@ const embedUrl = `${profileUrl}embed/`;
     class="ig-iframe"
     title={`${handle} Instagram Feed`}
     loading="lazy"
-    allowtransparency="true"
-    frameborder="0"
-    scrolling="no"
   ></iframe>
 </div>
 <p class="ig-more">
@@ -36,6 +33,7 @@ const embedUrl = `${profileUrl}embed/`;
     border-radius: var(--radius);
     background: var(--color-bg-card);
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
   }
 
   .ig-more {
