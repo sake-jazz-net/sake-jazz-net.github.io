@@ -3,40 +3,38 @@ const profileUrl =
   "https://www.instagram.com/happy_flight_jazz_orchestra/";
 const handle = "@happy_flight_jazz_orchestra";
 
-// Behold.so Feed ID — 取得後にここを更新
-const feedId = "YOUR_FEED_ID";
+// 個別投稿の shortcode を追加するとカード埋め込みで表示されます
+// 例: https://www.instagram.com/p/ABC123/ → "ABC123"
+const postShortcodes: string[] = [];
 ---
 
 {
-  feedId !== "YOUR_FEED_ID" ? (
-    <div class="ig-widget">
-      <behold-widget feed-id={feedId} />
+  postShortcodes.length > 0 ? (
+    <div class="ig-grid">
+      {postShortcodes.map((code) => (
+        <div class="ig-post">
+          <iframe
+            src={`https://www.instagram.com/p/${code}/embed/captioned/`}
+            title="Instagram post"
+            loading="lazy"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+          />
+        </div>
+      ))}
     </div>
   ) : (
-    <div class="ig-fallback">
-      <a
-        href={profileUrl}
-        class="ig-link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <svg
-          class="ig-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-          <circle cx="12" cy="12" r="5" />
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-        </svg>
-        <span class="ig-handle">{handle}</span>
-        <span class="ig-cta">Instagramを見る &rarr;</span>
-      </a>
+    <div class="ig-feed">
+      <iframe
+        src={`${profileUrl}embed/`}
+        class="ig-iframe"
+        title={`${handle} Instagram Feed`}
+        loading="lazy"
+        allowtransparency="true"
+        frameborder="0"
+        scrolling="yes"
+      />
     </div>
   )
 }
@@ -47,62 +45,41 @@ const feedId = "YOUR_FEED_ID";
   </a>
 </p>
 
-<script>
-  const widget = document.querySelector("behold-widget");
-  if (widget) {
-    const s = document.createElement("script");
-    s.type = "module";
-    s.src = "https://w.behold.so/widget.js";
-    document.head.appendChild(s);
-  }
-</script>
-
 <style>
-  .ig-widget {
+  .ig-feed {
     display: flex;
     justify-content: center;
   }
 
-  .ig-fallback {
-    display: flex;
-    justify-content: center;
-  }
-
-  .ig-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 2rem 3rem;
+  .ig-iframe {
+    width: 100%;
+    max-width: 540px;
+    height: 800px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     background: var(--color-bg-card);
     box-shadow: var(--shadow-sm);
-    transition:
-      border-color 0.3s,
-      box-shadow 0.3s;
   }
 
-  .ig-link:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: var(--shadow-md);
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+    justify-items: center;
   }
 
-  .ig-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    color: var(--color-red);
+  .ig-post {
+    width: 100%;
+    max-width: 400px;
   }
 
-  .ig-handle {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .ig-cta {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
+  .ig-post iframe {
+    width: 100%;
+    min-height: 480px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-card);
+    box-shadow: var(--shadow-sm);
   }
 
   .ig-more {
