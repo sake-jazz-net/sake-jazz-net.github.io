@@ -3,6 +3,8 @@ import Base from "@/layouts/Base.astro";
 import Header from "@/components/Header.astro";
 import Hero from "@/components/Hero.astro";
 import EventCard from "@/components/EventCard.astro";
+import YouTube from "@/components/YouTube.astro";
+import Instagram from "@/components/Instagram.astro";
 import Footer from "@/components/Footer.astro";
 import { getCollection } from "astro:content";
 
@@ -65,6 +67,14 @@ const past = sorted.filter((e) => e.data.date < now).reverse();
             より多くの方々に日本酒の魅力とジャズの楽しさを共有していただけることを楽しみにしております。
           </p>
         </div>
+      </div>
+    </section>
+
+    <section id="media">
+      <div class="container">
+        <h2>Media</h2>
+        <YouTube />
+        <Instagram />
       </div>
     </section>
 

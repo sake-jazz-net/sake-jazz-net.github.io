@@ -1,0 +1,136 @@
+---
+const channelUrl =
+  "https://www.youtube.com/channel/UCoTBmnTZ5XwJY3Awkjjz_ag";
+
+const videos = [
+  {
+    id: "LuItGeSY65I",
+    title: "Live at HMVP Okachimachi Studio 3-27-2025 1st",
+  },
+  {
+    id: "LO776Sahk2E",
+    title: "Live at HMVP Okachimachi Studio 3-27-2025 2nd",
+  },
+  {
+    id: "_cR5PDa9iTw",
+    title: "Live at HMVP Okachimachi Studio 6-18-2025 2nd",
+  },
+];
+---
+
+<div class="yt-grid">
+  {
+    videos.map((v) => (
+      <div class="yt-item">
+        <div class="yt-embed">
+          <lite-youtube videoid={v.id} playlabel={v.title}>
+            <a
+              href={`https://www.youtube.com/watch?v=${v.id}`}
+              class="yt-fallback"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+                alt={v.title}
+                loading="lazy"
+              />
+              <span class="yt-play" aria-hidden="true" />
+            </a>
+          </lite-youtube>
+        </div>
+        <p class="yt-title">{v.title}</p>
+      </div>
+    ))
+  }
+</div>
+<p class="yt-more">
+  <a href={channelUrl} target="_blank" rel="noopener noreferrer">
+    YouTubeチャンネルをもっと見る &rarr;
+  </a>
+</p>
+
+<script>
+  import "lite-youtube-embed/src/lite-yt-embed.js";
+</script>
+
+<style>
+  @import "lite-youtube-embed/src/lite-yt-embed.css";
+
+  .yt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .yt-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .yt-embed {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+  }
+
+  .yt-embed :global(lite-youtube) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .yt-fallback {
+    display: block;
+    position: relative;
+  }
+
+  .yt-fallback img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .yt-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    transition: background 0.2s;
+  }
+
+  .yt-play::after {
+    content: "";
+    border-style: solid;
+    border-width: 12px 0 12px 22px;
+    border-color: transparent transparent transparent white;
+  }
+
+  .yt-fallback:hover .yt-play {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .yt-title {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .yt-more {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .yt-more a {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .yt-more a:hover {
+    color: var(--color-accent);
+  }
+</style>

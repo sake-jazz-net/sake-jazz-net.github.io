@@ -9,6 +9,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.7.10"
+    "astro": "^5.7.10",
+    "lite-youtube-embed": "^0.3.4"
   }
 }
