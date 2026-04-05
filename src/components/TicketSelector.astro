@@ -2,6 +2,7 @@
 interface Ticket {
   label: string;
   amount: number;
+  paymentUrl?: string;
   stripePriceId?: string;
   capacity?: number;
 }
@@ -12,11 +13,9 @@ interface Props {
 }
 
 const { tickets, eventTitle } = Astro.props;
-const stripePublishableKey =
-  "pk_test_51TIgNPQ1qjm6yGpmoCOiDuplQj9jmVaRnCdH2kK9b2PW4Rzmz3ZOqdXJv1hJbJJUPpvacPIv4so7PHOFNFoo1ohC00GSZ7tGXe";
 ---
 
-<div class="ticket-selector" data-stripe-pk={stripePublishableKey}>
+<div class="ticket-selector">
   <h4 class="ticket-heading">チケットを選択</h4>
   <div class="ticket-list">
     {
@@ -25,25 +24,40 @@ const stripePublishableKey =
           <input
             type="radio"
             name="ticket"
-            value={t.stripePriceId || ""}
-            data-label={t.label}
+            value={t.paymentUrl || ""}
             data-amount={t.amount}
             checked={i === 0}
-            disabled={!t.stripePriceId}
+            disabled={!t.paymentUrl}
           />
           <span class="ticket-card">
             <span class="ticket-label">{t.label}</span>
             <span class="ticket-price">
               ¥{t.amount.toLocaleString("ja-JP")}
             </span>
-            {t.capacity && (
-              <span class="ticket-cap">定員 {t.capacity}名</span>
-            )}
           </span>
         </label>
       ))
     }
   </div>
+
+  <div class="qty-row">
+    <label class="qty-label" for="ticket-qty">枚数</label>
+    <div class="qty-control">
+      <button type="button" class="qty-btn qty-minus" aria-label="減らす">−</button>
+      <input
+        type="number"
+        id="ticket-qty"
+        class="qty-input"
+        value="1"
+        min="1"
+        max="10"
+        readonly
+      />
+      <button type="button" class="qty-btn qty-plus" aria-label="増やす">＋</button>
+    </div>
+    <span class="qty-subtotal"></span>
+  </div>
+
   <button class="checkout-btn" type="button">
     購入手続きへ
   </button>
@@ -56,32 +70,60 @@ const stripePublishableKey =
   const container = document.querySelector(
     ".ticket-selector"
   ) as HTMLElement | null;
-  if (container) {
-    const pk = container.dataset.stripePk;
-    const btn = container.querySelector(".checkout-btn") as HTMLButtonElement;
 
-    btn.addEventListener("click", async () => {
-      const selected = container.querySelector(
+  if (container) {
+    const btn = container.querySelector(".checkout-btn") as HTMLButtonElement;
+    const qtyInput = container.querySelector(".qty-input") as HTMLInputElement;
+    const minusBtn = container.querySelector(".qty-minus") as HTMLButtonElement;
+    const plusBtn = container.querySelector(".qty-plus") as HTMLButtonElement;
+    const subtotal = container.querySelector(
+      ".qty-subtotal"
+    ) as HTMLSpanElement;
+
+    function getSelectedAmount(): number {
+      const sel = container!.querySelector(
+        'input[name="ticket"]:checked'
+      ) as HTMLInputElement | null;
+      return sel ? Number(sel.dataset.amount) : 0;
+    }
+
+    function updateSubtotal() {
+      const qty = Number(qtyInput.value);
+      const amount = getSelectedAmount();
+      subtotal.textContent = `合計 ¥${(amount * qty).toLocaleString("ja-JP")}`;
+    }
+
+    minusBtn.addEventListener("click", () => {
+      const v = Number(qtyInput.value);
+      if (v > 1) {
+        qtyInput.value = String(v - 1);
+        updateSubtotal();
+      }
+    });
+
+    plusBtn.addEventListener("click", () => {
+      const v = Number(qtyInput.value);
+      if (v < 10) {
+        qtyInput.value = String(v + 1);
+        updateSubtotal();
+      }
+    });
+
+    container.querySelectorAll('input[name="ticket"]').forEach((radio) => {
+      radio.addEventListener("change", updateSubtotal);
+    });
+
+    updateSubtotal();
+
+    btn.addEventListener("click", () => {
+      const selected = container!.querySelector(
         'input[name="ticket"]:checked'
       ) as HTMLInputElement | null;
       if (!selected || !selected.value) return;
 
-      btn.disabled = true;
-      btn.textContent = "読み込み中...";
-
-      const script = document.createElement("script");
-      script.src = "https://js.stripe.com/v3/";
-      script.onload = () => {
-        // @ts-ignore
-        const stripe = Stripe(pk);
-        stripe.redirectToCheckout({
-          lineItems: [{ price: selected.value, quantity: 1 }],
-          mode: "payment",
-          successUrl: `${window.location.origin}/checkout/success`,
-          cancelUrl: `${window.location.origin}/checkout/cancel`,
-        });
-      };
-      document.head.appendChild(script);
+      const qty = Number(qtyInput.value);
+      const url = `${selected.value}?quantity=${qty}`;
+      window.location.href = url;
     });
   }
 </script>
@@ -161,10 +203,72 @@ const stripePublishableKey =
     white-space: nowrap;
   }
 
-  .ticket-cap {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding: 0.6rem 0;
+  }
+
+  .qty-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    background: var(--color-bg-card);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .qty-btn:hover {
+    background: var(--color-bg-card-hover);
+  }
+
+  .qty-input {
+    width: 2.5rem;
+    height: 2.2rem;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-bg-card);
+    -moz-appearance: textfield;
+  }
+
+  .qty-input::-webkit-inner-spin-button,
+  .qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .qty-subtotal {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-red);
+    margin-left: auto;
   }
 
   .checkout-btn {
@@ -208,8 +312,8 @@ const stripePublishableKey =
       gap: 0.3rem;
     }
 
-    .ticket-cap {
-      width: 100%;
+    .qty-row {
+      flex-wrap: wrap;
     }
   }
 </style>
