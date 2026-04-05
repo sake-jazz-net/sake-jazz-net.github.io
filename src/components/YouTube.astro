@@ -22,22 +22,14 @@ const videos = [
   {
     videos.map((v) => (
       <div class="yt-item">
-        <div class="yt-embed">
-          <lite-youtube videoid={v.id} playlabel={v.title}>
-            <a
-              href={`https://www.youtube.com/watch?v=${v.id}`}
-              class="yt-fallback"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
-                alt={v.title}
-                loading="lazy"
-              />
-              <span class="yt-play" aria-hidden="true" />
-            </a>
-          </lite-youtube>
+        <div class="yt-wrapper">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+            title={v.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
         </div>
         <p class="yt-title">{v.title}</p>
       </div>
@@ -50,13 +42,7 @@ const videos = [
   </a>
 </p>
 
-<script>
-  import "lite-youtube-embed/src/lite-yt-embed.js";
-</script>
-
 <style>
-  @import "lite-youtube-embed/src/lite-yt-embed.css";
-
   .yt-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -69,50 +55,23 @@ const videos = [
     gap: 0.5rem;
   }
 
-  .yt-embed {
+  .yt-wrapper {
     position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     border-radius: var(--radius);
     overflow: hidden;
-    background: var(--color-bg-card);
+    background: #000;
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-sm);
   }
 
-  .yt-embed :global(lite-youtube) {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .yt-fallback {
-    display: block;
-    position: relative;
-  }
-
-  .yt-fallback img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  .yt-play {
+  .yt-wrapper iframe {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    transition: background 0.2s;
-  }
-
-  .yt-play::after {
-    content: "";
-    border-style: solid;
-    border-width: 12px 0 12px 22px;
-    border-color: transparent transparent transparent white;
-  }
-
-  .yt-fallback:hover .yt-play {
-    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
   .yt-title {
