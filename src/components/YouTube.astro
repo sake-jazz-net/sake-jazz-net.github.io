@@ -1,46 +1,84 @@
 ---
-const channelUrl =
-  "https://www.youtube.com/channel/UCoTBmnTZ5XwJY3Awkjjz_ag";
+import { XMLParser } from "fast-xml-parser";
 
-const videos = [
-  {
-    id: "LuItGeSY65I",
-    title: "Live at HMVP Okachimachi Studio 3-27-2025 1st",
-  },
-  {
-    id: "LO776Sahk2E",
-    title: "Live at HMVP Okachimachi Studio 3-27-2025 2nd",
-  },
-  {
-    id: "_cR5PDa9iTw",
-    title: "Live at HMVP Okachimachi Studio 6-18-2025 2nd",
-  },
-];
+const CHANNEL_ID = "UCoTBmnTZ5XwJY3Awkjjz_ag";
+const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+const MAX_VIDEOS = 6;
+
+interface Video {
+  id: string;
+  title: string;
+  views: number;
+  published: string;
+}
+
+let videos: Video[] = [];
+
+try {
+  const res = await fetch(RSS_URL);
+  const xml = await res.text();
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+  });
+  const feed = parser.parse(xml);
+
+  const entries = Array.isArray(feed.feed.entry)
+    ? feed.feed.entry
+    : feed.feed.entry
+      ? [feed.feed.entry]
+      : [];
+
+  videos = entries
+    .map((entry: any) => ({
+      id: entry["yt:videoId"] as string,
+      title: (entry["media:group"]?.["media:title"] ?? entry.title) as string,
+      views: Number(
+        entry["media:group"]?.["media:community"]?.["media:statistics"]?.[
+          "@_views"
+        ] ?? 0
+      ),
+      published: entry.published as string,
+    }))
+    .sort((a: Video, b: Video) => b.views - a.views)
+    .slice(0, MAX_VIDEOS);
+} catch {
+  /* graceful fallback: show nothing */
+}
+
+const channelUrl = `https://www.youtube.com/channel/${CHANNEL_ID}`;
 ---
 
-<div class="yt-grid">
-  {
-    videos.map((v) => (
-      <div class="yt-item">
-        <div class="yt-wrapper">
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${v.id}`}
-            title={v.title}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          />
-        </div>
-        <p class="yt-title">{v.title}</p>
+{
+  videos.length > 0 && (
+    <>
+      <div class="yt-grid">
+        {videos.map((v) => (
+          <div class="yt-item">
+            <div class="yt-wrapper">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+                title={v.title}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </div>
+            <p class="yt-title">{v.title}</p>
+            <p class="yt-views">
+              {v.views.toLocaleString("ja-JP")} 回視聴
+            </p>
+          </div>
+        ))}
       </div>
-    ))
-  }
-</div>
-<p class="yt-more">
-  <a href={channelUrl} target="_blank" rel="noopener noreferrer">
-    YouTubeチャンネルをもっと見る &rarr;
-  </a>
-</p>
+      <p class="yt-more">
+        <a href={channelUrl} target="_blank" rel="noopener noreferrer">
+          YouTubeチャンネルをもっと見る &rarr;
+        </a>
+      </p>
+    </>
+  )
+}
 
 <style>
   .yt-grid {
@@ -52,7 +90,7 @@ const videos = [
   .yt-item {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .yt-wrapper {
@@ -78,6 +116,12 @@ const videos = [
     font-size: 0.8rem;
     color: var(--color-text-muted);
     line-height: 1.4;
+  }
+
+  .yt-views {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    opacity: 0.7;
   }
 
   .yt-more {
