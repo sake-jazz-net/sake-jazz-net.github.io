@@ -1,0 +1,149 @@
+---
+import Base from "@/layouts/Base.astro";
+import Header from "@/components/Header.astro";
+import Hero from "@/components/Hero.astro";
+import EventCard from "@/components/EventCard.astro";
+import Footer from "@/components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const allEvents = await getCollection("events", ({ data }) => !data.draft);
+const sorted = allEvents.sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime()
+);
+const now = new Date();
+const upcoming = sorted.filter((e) => e.data.date >= now);
+const past = sorted.filter((e) => e.data.date < now).reverse();
+---
+
+<Base>
+  <Header />
+  <main>
+    <Hero />
+
+    <section id="events">
+      <div class="container">
+        <h2>Events</h2>
+
+        {
+          upcoming.length > 0 ? (
+            <div class="event-list">
+              {upcoming.map((event) => (
+                <EventCard {...event.data} />
+              ))}
+            </div>
+          ) : (
+            <p class="no-events">現在予定されているイベントはありません。</p>
+          )
+        }
+
+        {
+          past.length > 0 && (
+            <details class="past-events">
+              <summary>過去のイベント</summary>
+              <div class="event-list">
+                {past.map((event) => (
+                  <EventCard {...event.data} />
+                ))}
+              </div>
+            </details>
+          )
+        }
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2>About</h2>
+        <div class="about-body">
+          <p>
+            Happy Flight Jazz Orchestraは、毎月のライブイベントでビッグバンドジャズと日本酒の融合を追求してきました。
+          </p>
+          <p>
+            この活動を「SAKE-JAZZ」というテーマでさらに発展させ、酒蔵様とのコラボレーションイベントを展開しています。2017年からスタートした「豊島屋ジャズ」では、酒蔵の雰囲気と音楽が調和し、毎回大好評をいただいています。
+          </p>
+          <p>
+            より多くの方々に日本酒の魅力とジャズの楽しさを共有していただけることを楽しみにしております。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>Contact</h2>
+        <div class="contact-body">
+          <p>イベントに関するお問い合わせはメールにてお願いいたします。</p>
+          <a href="mailto:info.happyflight2@gmail.com" class="contact-email">
+            info.happyflight2@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .no-events {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 3rem 0;
+    font-style: italic;
+  }
+
+  .past-events {
+    margin-top: 2.5rem;
+  }
+
+  .past-events summary {
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    user-select: none;
+  }
+
+  .past-events summary:hover {
+    color: var(--color-accent);
+  }
+
+  .about-body {
+    max-width: 640px;
+  }
+
+  .about-body p {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.9;
+  }
+
+  .contact-body {
+    max-width: 640px;
+  }
+
+  .contact-body p {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .contact-email {
+    display: inline-block;
+    padding: 0.6rem 2rem;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-email:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+</style>

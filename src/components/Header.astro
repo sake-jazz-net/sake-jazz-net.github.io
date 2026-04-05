@@ -1,0 +1,72 @@
+---
+const links = [
+  { href: "#events", label: "Events" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo">SAKE-JAZZ</a>
+    <nav aria-label="メインナビゲーション">
+      <ul class="nav-list">
+        {
+          links.map(({ href, label }) => (
+            <li>
+              <a href={href}>{label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 15, 15, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+  }
+
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+  }
+
+  .logo:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .nav-list {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-list a {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+  }
+
+  .nav-list a:hover {
+    color: var(--color-accent);
+  }
+</style>

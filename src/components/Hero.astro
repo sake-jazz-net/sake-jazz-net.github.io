@@ -1,0 +1,66 @@
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="hero-tagline">Jazz & Sake Live Events</p>
+    <h1>SAKE-JAZZ</h1>
+    <p class="hero-description">
+      ビッグバンドジャズと日本酒が出会う<br />
+      ライブイベントを毎月開催しています
+    </p>
+    <a href="#events" class="hero-cta">イベントを見る</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 6rem 0 5rem;
+    text-align: center;
+    border-bottom: none;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(200, 169, 110, 0.08) 0%, transparent 60%),
+      var(--color-bg);
+  }
+
+  .hero + section {
+    border-top: none;
+  }
+
+  .hero-tagline {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 2;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    border-radius: var(--radius);
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+
+  .hero-cta:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+</style>
