@@ -2,43 +2,20 @@
 const profileUrl =
   "https://www.instagram.com/happy_flight_jazz_orchestra/";
 const handle = "@happy_flight_jazz_orchestra";
-
-// 個別投稿の shortcode を追加するとカード埋め込みで表示されます
-// 例: https://www.instagram.com/p/ABC123/ → "ABC123"
-const postShortcodes: string[] = [];
+const embedUrl = `${profileUrl}embed/`;
 ---
 
-{
-  postShortcodes.length > 0 ? (
-    <div class="ig-grid">
-      {postShortcodes.map((code) => (
-        <div class="ig-post">
-          <iframe
-            src={`https://www.instagram.com/p/${code}/embed/captioned/`}
-            title="Instagram post"
-            loading="lazy"
-            allowtransparency="true"
-            frameborder="0"
-            scrolling="no"
-          />
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div class="ig-feed">
-      <iframe
-        src={`${profileUrl}embed/`}
-        class="ig-iframe"
-        title={`${handle} Instagram Feed`}
-        loading="lazy"
-        allowtransparency="true"
-        frameborder="0"
-        scrolling="yes"
-      />
-    </div>
-  )
-}
-
+<div class="ig-feed">
+  <iframe
+    src={embedUrl}
+    class="ig-iframe"
+    title={`${handle} Instagram Feed`}
+    loading="lazy"
+    allowtransparency="true"
+    frameborder="0"
+    scrolling="no"
+  ></iframe>
+</div>
 <p class="ig-more">
   <a href={profileUrl} target="_blank" rel="noopener noreferrer">
     Instagramでもっと見る &rarr;
@@ -54,28 +31,7 @@ const postShortcodes: string[] = [];
   .ig-iframe {
     width: 100%;
     max-width: 540px;
-    height: 800px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-bg-card);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .ig-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.2rem;
-    justify-items: center;
-  }
-
-  .ig-post {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .ig-post iframe {
-    width: 100%;
-    min-height: 480px;
+    min-height: 600px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     background: var(--color-bg-card);
