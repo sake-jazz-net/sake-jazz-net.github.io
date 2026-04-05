@@ -19,7 +19,41 @@ const past = sorted.filter((e) => e.data.date < now).reverse();
 
 <Base>
   <Header />
-  <main>
+  {
+    upcoming.map((event) => {
+      const e = event.data;
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "MusicEvent",
+        name: e.title,
+        startDate: e.date.toISOString(),
+        location: {
+          "@type": "Place",
+          name: e.location,
+          address: e.address || e.location,
+        },
+        description: e.description || "",
+        offers: (e.tickets || []).map((t: { label: string; amount: number; paymentUrl?: string }) => ({
+          "@type": "Offer",
+          name: t.label,
+          price: t.amount,
+          priceCurrency: "JPY",
+          url: t.paymentUrl || "",
+          availability: "https://schema.org/InStock",
+        })),
+        organizer: e.organizer
+          ? { "@type": "Organization", name: e.organizer }
+          : undefined,
+      };
+      return (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd)}
+        />
+      );
+    })
+  }
+  <main id="main-content">
     <Hero />
 
     <section id="events">

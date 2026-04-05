@@ -12,10 +12,11 @@ interface Props {
   eventTitle: string;
 }
 
-const { tickets, eventTitle } = Astro.props;
+const { tickets } = Astro.props;
+const uid = `ticket-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<div class="ticket-selector">
+<div class="ticket-selector" data-uid={uid}>
   <h4 class="ticket-heading">チケットを選択</h4>
   <div class="ticket-list">
     {
@@ -23,7 +24,7 @@ const { tickets, eventTitle } = Astro.props;
         <label class="ticket-option">
           <input
             type="radio"
-            name="ticket"
+            name={uid}
             value={t.paymentUrl || ""}
             data-amount={t.amount}
             checked={i === 0}
@@ -52,21 +53,18 @@ const { tickets, eventTitle } = Astro.props;
 </div>
 
 <script>
-  const container = document.querySelector(
-    ".ticket-selector"
-  ) as HTMLElement | null;
-
-  if (container) {
+  document.querySelectorAll<HTMLElement>(".ticket-selector").forEach((container) => {
+    const uid = container.dataset.uid;
+    if (!uid) return;
     const btn = container.querySelector(".checkout-btn") as HTMLButtonElement;
-
     btn.addEventListener("click", () => {
       const selected = container.querySelector(
-        'input[name="ticket"]:checked'
+        `input[name="${uid}"]:checked`
       ) as HTMLInputElement | null;
       if (!selected || !selected.value) return;
       window.location.href = selected.value;
     });
-  }
+  });
 </script>
 
 <style>
