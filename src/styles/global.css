@@ -1,16 +1,22 @@
 :root {
-  --color-bg: #0f0f0f;
-  --color-bg-card: #1a1a1a;
-  --color-bg-card-hover: #222;
-  --color-text: #e8e4df;
-  --color-text-muted: #9a9590;
-  --color-accent: #c8a96e;
-  --color-accent-hover: #dbbe82;
-  --color-border: #2a2a2a;
+  --color-bg: #faf8f5;
+  --color-bg-card: #ffffff;
+  --color-bg-card-hover: #f5f2ee;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5a5550;
+  --color-navy: #00415c;
+  --color-red: #af302c;
+  --color-red-hover: #c73a35;
+  --color-accent: #00415c;
+  --color-accent-hover: #005a7d;
+  --color-border: #e4dfd8;
+  --color-border-hover: #00415c;
   --font-sans: "Helvetica Neue", "Noto Sans JP", Arial, sans-serif;
   --font-serif: "Georgia", "Noto Serif JP", serif;
   --max-width: 960px;
   --radius: 8px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 *,
@@ -79,7 +85,7 @@ h1 {
 
 h2 {
   font-size: clamp(1.4rem, 3vw, 1.8rem);
-  color: var(--color-accent);
+  color: var(--color-navy);
   margin-bottom: 2rem;
 }
 

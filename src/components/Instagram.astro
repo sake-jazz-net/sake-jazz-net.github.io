@@ -34,21 +34,22 @@ const handle = "@happy_flight_jazz_orchestra";
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
     transition:
       border-color 0.3s,
-      background 0.3s;
+      box-shadow 0.3s;
   }
 
   .ig-link:hover {
-    border-color: var(--color-accent);
-    background: var(--color-bg-card-hover);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-md);
   }
 
   .ig-icon {
     width: 1.5rem;
     height: 1.5rem;
     flex-shrink: 0;
-    color: var(--color-accent);
+    color: var(--color-red);
   }
 
   .ig-handle {
