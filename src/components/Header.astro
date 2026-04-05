@@ -8,7 +8,9 @@ const links = [
 
 <header class="header">
   <div class="container header-inner">
-    <a href="/" class="logo">SAKE-JAZZ</a>
+    <a href="/" class="logo">
+      <img src="/logo-mono.svg" alt="SAKE-JAZZ" class="logo-img" />
+    </a>
     <nav aria-label="メインナビゲーション">
       <ul class="nav-list">
         {
@@ -41,15 +43,19 @@ const links = [
   }
 
   .logo {
-    font-family: var(--font-serif);
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--color-accent);
+    display: flex;
+    align-items: center;
   }
 
-  .logo:hover {
-    color: var(--color-accent-hover);
+  .logo-img {
+    height: 2rem;
+    width: auto;
+    filter: brightness(0) invert(0.78) sepia(0.5) saturate(1.5) hue-rotate(10deg);
+    transition: filter 0.2s;
+  }
+
+  .logo:hover .logo-img {
+    filter: brightness(0) invert(0.88) sepia(0.6) saturate(2) hue-rotate(10deg);
   }
 
   .nav-list {

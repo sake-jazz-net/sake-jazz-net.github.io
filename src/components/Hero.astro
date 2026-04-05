@@ -1,7 +1,8 @@
 <section class="hero">
   <div class="container hero-inner">
+    <img src="/logo.svg" alt="" class="hero-logo" aria-hidden="true" />
+    <h1 class="sr-only">SAKE-JAZZ</h1>
     <p class="hero-tagline">Jazz & Sake Live Events</p>
-    <h1>SAKE-JAZZ</h1>
     <p class="hero-description">
       ビッグバンドジャズと日本酒が出会う<br />
       ライブイベントを毎月開催しています
@@ -24,18 +25,17 @@
     border-top: none;
   }
 
+  .hero-logo {
+    width: clamp(240px, 50vw, 400px);
+    height: auto;
+    margin: 0 auto 2rem;
+  }
+
   .hero-tagline {
     font-size: 0.8rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin-bottom: 1rem;
-  }
-
-  .hero h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    font-weight: 700;
-    letter-spacing: 0.2em;
     margin-bottom: 1.5rem;
   }
 
