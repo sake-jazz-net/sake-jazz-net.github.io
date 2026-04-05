@@ -40,29 +40,12 @@ const { tickets, eventTitle } = Astro.props;
     }
   </div>
 
-  <div class="qty-row">
-    <label class="qty-label" for="ticket-qty">枚数</label>
-    <div class="qty-control">
-      <button type="button" class="qty-btn qty-minus" aria-label="減らす">−</button>
-      <input
-        type="number"
-        id="ticket-qty"
-        class="qty-input"
-        value="1"
-        min="1"
-        max="10"
-        readonly
-      />
-      <button type="button" class="qty-btn qty-plus" aria-label="増やす">＋</button>
-    </div>
-    <span class="qty-subtotal"></span>
-  </div>
-
   <button class="checkout-btn" type="button">
     購入手続きへ
   </button>
   <p class="checkout-note">
-    Stripe の安全な決済ページへ移動します（テストモード）
+    Stripe の安全な決済ページへ移動します（テストモード）<br />
+    枚数は決済ページで変更できます
   </p>
 </div>
 
@@ -73,57 +56,13 @@ const { tickets, eventTitle } = Astro.props;
 
   if (container) {
     const btn = container.querySelector(".checkout-btn") as HTMLButtonElement;
-    const qtyInput = container.querySelector(".qty-input") as HTMLInputElement;
-    const minusBtn = container.querySelector(".qty-minus") as HTMLButtonElement;
-    const plusBtn = container.querySelector(".qty-plus") as HTMLButtonElement;
-    const subtotal = container.querySelector(
-      ".qty-subtotal"
-    ) as HTMLSpanElement;
-
-    function getSelectedAmount(): number {
-      const sel = container!.querySelector(
-        'input[name="ticket"]:checked'
-      ) as HTMLInputElement | null;
-      return sel ? Number(sel.dataset.amount) : 0;
-    }
-
-    function updateSubtotal() {
-      const qty = Number(qtyInput.value);
-      const amount = getSelectedAmount();
-      subtotal.textContent = `合計 ¥${(amount * qty).toLocaleString("ja-JP")}`;
-    }
-
-    minusBtn.addEventListener("click", () => {
-      const v = Number(qtyInput.value);
-      if (v > 1) {
-        qtyInput.value = String(v - 1);
-        updateSubtotal();
-      }
-    });
-
-    plusBtn.addEventListener("click", () => {
-      const v = Number(qtyInput.value);
-      if (v < 10) {
-        qtyInput.value = String(v + 1);
-        updateSubtotal();
-      }
-    });
-
-    container.querySelectorAll('input[name="ticket"]').forEach((radio) => {
-      radio.addEventListener("change", updateSubtotal);
-    });
-
-    updateSubtotal();
 
     btn.addEventListener("click", () => {
-      const selected = container!.querySelector(
+      const selected = container.querySelector(
         'input[name="ticket"]:checked'
       ) as HTMLInputElement | null;
       if (!selected || !selected.value) return;
-
-      const qty = Number(qtyInput.value);
-      const url = `${selected.value}?quantity=${qty}`;
-      window.location.href = url;
+      window.location.href = selected.value;
     });
   }
 </script>
@@ -203,74 +142,6 @@ const { tickets, eventTitle } = Astro.props;
     white-space: nowrap;
   }
 
-  .qty-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-    padding: 0.6rem 0;
-  }
-
-  .qty-label {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  .qty-control {
-    display: flex;
-    align-items: center;
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .qty-btn {
-    width: 2.2rem;
-    height: 2.2rem;
-    border: none;
-    background: var(--color-bg-card);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-navy);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-  }
-
-  .qty-btn:hover {
-    background: var(--color-bg-card-hover);
-  }
-
-  .qty-input {
-    width: 2.5rem;
-    height: 2.2rem;
-    text-align: center;
-    border: none;
-    border-left: 1px solid var(--color-border);
-    border-right: 1px solid var(--color-border);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--color-text);
-    background: var(--color-bg-card);
-    -moz-appearance: textfield;
-  }
-
-  .qty-input::-webkit-inner-spin-button,
-  .qty-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .qty-subtotal {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--color-red);
-    margin-left: auto;
-  }
-
   .checkout-btn {
     display: block;
     width: 100%;
@@ -304,16 +175,13 @@ const { tickets, eventTitle } = Astro.props;
     font-size: 0.72rem;
     color: var(--color-text-muted);
     text-align: center;
+    line-height: 1.6;
   }
 
   @media (max-width: 480px) {
     .ticket-card {
       flex-wrap: wrap;
       gap: 0.3rem;
-    }
-
-    .qty-row {
-      flex-wrap: wrap;
     }
   }
 </style>
