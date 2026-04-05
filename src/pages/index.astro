@@ -56,16 +56,25 @@ const past = sorted.filter((e) => e.data.date < now).reverse();
     <section id="about">
       <div class="container">
         <h2>About</h2>
-        <div class="about-body">
-          <p>
-            Happy Flight Jazz Orchestraは、毎月のライブイベントでビッグバンドジャズと日本酒の融合を追求してきました。
-          </p>
-          <p>
-            この活動を「SAKE-JAZZ」というテーマでさらに発展させ、酒蔵様とのコラボレーションイベントを展開しています。2017年からスタートした「豊島屋ジャズ」では、酒蔵の雰囲気と音楽が調和し、毎回大好評をいただいています。
-          </p>
-          <p>
-            より多くの方々に日本酒の魅力とジャズの楽しさを共有していただけることを楽しみにしております。
-          </p>
+        <div class="about-layout">
+          <div class="about-photo">
+            <img
+              src="/about.jpg"
+              alt="Happy Flight Jazz Orchestra ライブ演奏風景"
+              loading="lazy"
+            />
+          </div>
+          <div class="about-body">
+            <p>
+              Happy Flight Jazz Orchestraは、毎月のライブイベントでビッグバンドジャズと日本酒の融合を追求してきました。
+            </p>
+            <p>
+              この活動を「SAKE-JAZZ」というテーマでさらに発展させ、酒蔵様とのコラボレーションイベントを展開しています。2017年からスタートした「豊島屋ジャズ」では、酒蔵の雰囲気と音楽が調和し、毎回大好評をいただいています。
+            </p>
+            <p>
+              より多くの方々に日本酒の魅力とジャズの楽しさを共有していただけることを楽しみにしております。
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -124,14 +133,30 @@ const past = sorted.filter((e) => e.data.date < now).reverse();
     color: var(--color-accent);
   }
 
-  .about-body {
-    max-width: 640px;
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .about-photo img {
+    width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
   }
 
   .about-body p {
     margin-bottom: 1rem;
     color: var(--color-text-muted);
     line-height: 1.9;
+  }
+
+  @media (max-width: 640px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
   }
 
   .contact-body {
