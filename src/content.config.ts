@@ -10,6 +10,7 @@ const events = defineCollection({
     location: z.string(),
     address: z.string().optional(),
     access: z.string().optional(),
+    mapUrl: z.string().url().optional(),
     tickets: z
       .array(
         z.object({

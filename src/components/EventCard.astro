@@ -16,6 +16,7 @@ interface Props {
   location: string;
   address?: string;
   access?: string;
+  mapUrl?: string;
   tickets?: TicketEntry[];
   price: number;
   capacity?: number;
@@ -33,6 +34,7 @@ const {
   location,
   address,
   access,
+  mapUrl,
   tickets,
   price,
   capacity,
@@ -86,6 +88,30 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
         <dt>会場</dt>
         <dd>
           {location}
+          {
+            mapUrl && (
+              <a
+                href={mapUrl}
+                class="map-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                地図を見る
+              </a>
+            )
+          }
           {address && <span class="sub-text">{address}</span>}
         </dd>
       </div>
@@ -263,6 +289,26 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
 
   .detail-row dd {
     color: var(--color-text-muted);
+  }
+
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-left: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    white-space: nowrap;
+  }
+
+  .map-link:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .map-link svg {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
   .sub-text {
