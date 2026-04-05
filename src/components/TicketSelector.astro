@@ -44,8 +44,10 @@ const { tickets, eventTitle } = Astro.props;
     購入手続きへ
   </button>
   <p class="checkout-note">
-    Stripe の決済ページへ移動します（テストモード）<br />
-    複数枚購入する場合は、決済ページで枚数を変更できます
+    Stripe の決済ページへ移動します（テストモード）
+  </p>
+  <p class="checkout-notice">
+    ※ 複数枚購入する場合は、決済ページで枚数を変更できます
   </p>
 </div>
 
@@ -175,6 +177,18 @@ const { tickets, eventTitle } = Astro.props;
     font-size: 0.72rem;
     color: var(--color-text-muted);
     text-align: center;
+    line-height: 1.6;
+  }
+
+  .checkout-notice {
+    margin-top: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    background: rgba(0, 65, 92, 0.06);
+    border-left: 3px solid var(--color-navy);
+    border-radius: 0 var(--radius) var(--radius) 0;
     line-height: 1.6;
   }
 

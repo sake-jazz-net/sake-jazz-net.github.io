@@ -124,20 +124,18 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
         )
       }
       {
-        (organizer || sponsor) && (
+        organizer && (
           <div class="detail-row">
-            {organizer && (
-              <>
-                <dt>主催</dt>
-                <dd>{organizer}</dd>
-              </>
-            )}
-            {sponsor && (
-              <>
-                <dt>協賛</dt>
-                <dd>{sponsor}</dd>
-              </>
-            )}
+            <dt>主催</dt>
+            <dd>{organizer}</dd>
+          </div>
+        )
+      }
+      {
+        sponsor && (
+          <div class="detail-row">
+            <dt>協賛</dt>
+            <dd>{sponsor}</dd>
           </div>
         )
       }
