@@ -29,6 +29,7 @@ const events = defineCollection({
     organizer: z.string().optional(),
     sponsor: z.string().optional(),
     description: z.string().optional(),
+    image: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

@@ -25,6 +25,7 @@ interface Props {
   organizer?: string;
   sponsor?: string;
   description?: string;
+  image?: string;
 }
 
 const {
@@ -43,6 +44,7 @@ const {
   organizer,
   sponsor,
   description,
+  image,
 } = Astro.props;
 
 const formatter = new Intl.DateTimeFormat("ja-JP", {
@@ -77,7 +79,16 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
   <div class="event-body">
     <h3 class="event-title">{title}</h3>
 
-    {description && <p class="event-desc">{description}</p>}
+    <div class:list={["event-intro", { "has-image": !!image }]}>
+      {description && <p class="event-desc">{description}</p>}
+      {
+        image && (
+          <div class="event-image">
+            <img src={image} alt={title} loading="lazy" />
+          </div>
+        )
+      }
+    </div>
 
     <dl class="event-details">
       <div class="detail-row">
@@ -257,6 +268,52 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
     margin-bottom: 0.8rem;
     color: var(--color-text);
     font-family: var(--font-sans);
+  }
+
+  .event-intro {
+    margin-bottom: 1.2rem;
+  }
+
+  .event-intro.has-image {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .event-intro.has-image .event-desc {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
+  .event-image {
+    flex-shrink: 0;
+    width: 280px;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .event-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 640px) {
+    .event-intro.has-image {
+      flex-direction: column;
+    }
+
+    .event-image {
+      width: 100%;
+      max-height: 200px;
+    }
+
+    .event-image img {
+      max-height: 200px;
+    }
   }
 
   .event-desc {
