@@ -1,7 +1,11 @@
 ---
-interface PriceEntry {
+import TicketSelector from "./TicketSelector.astro";
+
+interface TicketEntry {
   label: string;
   amount: number;
+  stripePriceId?: string;
+  capacity?: number;
 }
 
 interface Props {
@@ -11,7 +15,7 @@ interface Props {
   location: string;
   address?: string;
   access?: string;
-  prices?: PriceEntry[];
+  tickets?: TicketEntry[];
   price: number;
   capacity?: number;
   stripeUrl?: string;
@@ -28,7 +32,7 @@ const {
   location,
   address,
   access,
-  prices,
+  tickets,
   price,
   capacity,
   stripeUrl,
@@ -96,11 +100,11 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
         <dt>料金</dt>
         <dd>
           {
-            prices && prices.length > 0 ? (
+            tickets && tickets.length > 0 ? (
               <ul class="price-list">
-                {prices.map((p) => (
+                {tickets.map((t) => (
                   <li>
-                    {p.label}：¥{p.amount.toLocaleString("ja-JP")}
+                    {t.label}：¥{t.amount.toLocaleString("ja-JP")}
                   </li>
                 ))}
               </ul>
@@ -140,7 +144,9 @@ const ticketLabel = stripeUrl ? "チケットを購入" : "参加申し込み";
 
     <div class="event-actions">
       {
-        ticketUrl && !isPast ? (
+        tickets && tickets.some((t) => t.stripePriceId) && !isPast ? (
+          <TicketSelector tickets={tickets} eventTitle={title} />
+        ) : ticketUrl && !isPast ? (
           <a
             href={ticketUrl}
             class="ticket-btn"

@@ -10,8 +10,15 @@ const events = defineCollection({
     location: z.string(),
     address: z.string().optional(),
     access: z.string().optional(),
-    prices: z
-      .array(z.object({ label: z.string(), amount: z.number() }))
+    tickets: z
+      .array(
+        z.object({
+          label: z.string(),
+          amount: z.number(),
+          stripePriceId: z.string().optional(),
+          capacity: z.number().optional(),
+        })
+      )
       .optional(),
     price: z.number(),
     capacity: z.number().optional(),

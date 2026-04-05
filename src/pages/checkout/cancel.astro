@@ -1,0 +1,119 @@
+---
+import Base from "@/layouts/Base.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<Base title="決済キャンセル | SAKE-JAZZ">
+  <Header />
+  <main>
+    <section class="result">
+      <div class="container">
+        <div class="result-card cancel">
+          <div class="result-icon">←</div>
+          <h1>決済がキャンセルされました</h1>
+          <p>チケットの購入はまだ完了していません。</p>
+          <p class="sub">
+            もう一度お試しいただくか、ご不明な点がございましたらお問い合わせください。
+          </p>
+          <div class="actions">
+            <a href="/#events" class="back-link primary"
+              >イベントに戻る</a
+            >
+            <a href="mailto:info.happyflight2@gmail.com" class="back-link"
+              >お問い合わせ</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .result {
+    padding: 6rem 0 4rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .result-card {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2.5rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .cancel .result-icon {
+    background: #fff3e0;
+    color: #e65100;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 1rem;
+    font-family: var(--font-sans);
+  }
+
+  p {
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub {
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--color-navy);
+    border-radius: var(--radius);
+    color: var(--color-navy);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .back-link:hover {
+    background: var(--color-navy);
+    color: #fff;
+  }
+
+  .back-link.primary {
+    background: var(--color-navy);
+    color: #fff;
+  }
+
+  .back-link.primary:hover {
+    background: var(--color-accent-hover);
+  }
+</style>
