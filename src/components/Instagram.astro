@@ -2,71 +2,53 @@
 const profileUrl =
   "https://www.instagram.com/happy_flight_jazz_orchestra/";
 const handle = "@happy_flight_jazz_orchestra";
+const embedUrl = `${profileUrl}embed/`;
 ---
 
-<div class="ig-section">
-  <a
-    href={profileUrl}
-    class="ig-link"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-    <span class="ig-handle">{handle}</span>
-    <span class="ig-cta">Instagramを見る &rarr;</span>
-  </a>
+<div class="ig-feed">
+  <iframe
+    src={embedUrl}
+    class="ig-iframe"
+    title={`${handle} Instagram Feed`}
+    loading="lazy"
+    allowtransparency="true"
+    frameborder="0"
+    scrolling="no"
+  ></iframe>
 </div>
+<p class="ig-more">
+  <a href={profileUrl} target="_blank" rel="noopener noreferrer">
+    Instagramでもっと見る &rarr;
+  </a>
+</p>
 
 <style>
-  .ig-section {
-    margin-top: 2.5rem;
+  .ig-feed {
+    display: flex;
+    justify-content: center;
   }
 
-  .ig-link {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 1rem 1.5rem;
-    background: var(--color-bg-card);
+  .ig-iframe {
+    width: 100%;
+    max-width: 540px;
+    min-height: 600px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
+    background: var(--color-bg-card);
     box-shadow: var(--shadow-sm);
-    transition:
-      border-color 0.3s,
-      box-shadow 0.3s;
   }
 
-  .ig-link:hover {
-    border-color: var(--color-border-hover);
-    box-shadow: var(--shadow-md);
+  .ig-more {
+    margin-top: 1.2rem;
+    text-align: center;
   }
 
-  .ig-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex-shrink: 0;
-    color: var(--color-red);
-  }
-
-  .ig-handle {
-    font-size: 0.9rem;
-    color: var(--color-text);
-    font-weight: 700;
-  }
-
-  .ig-cta {
-    margin-left: auto;
-    font-size: 0.8rem;
+  .ig-more a {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
   }
 
-  @media (max-width: 480px) {
-    .ig-cta {
-      display: none;
-    }
+  .ig-more a:hover {
+    color: var(--color-navy);
   }
 </style>
